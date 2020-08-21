@@ -1,7 +1,7 @@
 import hashlib
 import os
 import base64
-import urllib
+from urllib import parse
 
 def _generate_random_bytes():
     """Generate random bytes.
@@ -16,7 +16,7 @@ def _generate_random_bytes():
     byte_hash = sha_hash.digest()
 
     # Rehash
-    for i in xrange(6):
+    for i in range(6):
         sha_hash = hashlib.sha512()
         sha_hash.update(byte_hash)
         byte_hash = sha_hash.digest()
@@ -108,6 +108,6 @@ def get_barcode_url(user, domain, secret_key):
     otp_url = get_otpauth_url(user, domain, secret_key)
 
     # Encode otp url
-    url += urllib.urlencode({'chl': otp_url})
+    url += parse.urlencode({'chl': otp_url})
 
     return url

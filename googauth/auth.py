@@ -40,7 +40,8 @@ def generate_code(secretkey, value=None):
     hash = hmac.new(secretkey, value, hashlib.sha1).digest()
 
     # Compute the truncated hash
-    offset = ord(hash[-1]) & 0x0F
+    offset = hash[-1] & 0x0F
+    # offset = ord(hash[-1]) & 0x0F
     truncated_hash = hash[offset:offset + 4]
 
     # Truncate to a smaller number of digits
@@ -80,7 +81,7 @@ def verify_counter_based(secretkey, code_attempt, counter, window=3):
         raise TypeError('Code must be a string.')
 
     # Check valid codes for match
-    for offset in xrange(1, window + 1):
+    for offset in range(1, window + 1):
         valid_code = generate_code(secretkey, counter + offset)
 
         if code_attempt == valid_code:
@@ -125,7 +126,7 @@ def verify_time_based(secretkey, code_attempt, window=3):
     epoch = int(time.time() / 30)
 
     # Check valid codes for match
-    for offset in xrange(window / 2 * -1, window - (window / 2)):
+    for offset in range(window // 2 * -1, window - (window // 2)):
         valid_code = generate_code(secretkey, epoch + offset)
 
         if code_attempt == valid_code:

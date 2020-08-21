@@ -1,4 +1,9 @@
 import unittest
+import os
+
+BASE_DIR = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
+os.sys.path.append(BASE_DIR)
+
 import googauth
 import time
 
@@ -16,12 +21,12 @@ class TestFunctions(unittest.TestCase):
         self.assertTrue(value == '060555')
 
         secret_key = googauth.generate_secret_key(8)
-        for i in xrange(50000):
+        for i in range(50000):
             value = googauth.generate_code(secret_key, i)
             self.assertTrue(len(value) == 6)
 
         secret_key = googauth.generate_secret_key(128)
-        for i in xrange(50000):
+        for i in range(50000):
             value = googauth.generate_code(secret_key, i)
             self.assertTrue(len(value) == 6)
 
@@ -57,21 +62,21 @@ class TestFunctions(unittest.TestCase):
         value = googauth.generate_secret_key()
         self.assertTrue(len(value) == 16)
 
-        for i in xrange(8, 129):
+        for i in range(8, 129):
             value = googauth.generate_secret_key(i)
             self.assertTrue(len(value) == i)
 
         exception = None
         try:
             value = googauth.generate_secret_key(7)
-        except TypeError, ex:
+        except TypeError as ex:
             exception = ex
         self.assertTrue(isinstance(exception, TypeError))
 
         exception = None
         try:
             value = googauth.generate_secret_key(129)
-        except TypeError, ex:
+        except TypeError as ex:
             exception = ex
         self.assertTrue(isinstance(exception, TypeError))
 
